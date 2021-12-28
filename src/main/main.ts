@@ -151,22 +151,11 @@ app.on('window-all-closed', () => {
 });
 
 function setupTrayIcon() {
-  const staticDir = require('path')
-    .join(__dirname, '/static')
-    .replace(/\\/g, '\\\\');
-  const iconFile = path.join(staticDir, '/trello-icon.ico');
+  const iconFile = path.join(__dirname, '/thunder.png');
   trayIcon = new Tray(iconFile);
-  trayIcon.setTitle('Quick Capture');
-  // let trayIcon = new Tray(`${__dirname}/dist/img/trello-icon.ico`)
-  // let trayIcon = new Tray(nativeImage.createEmpty())
+  // trayIcon.setTitle('Quick Capture');
 
   const contextMenu = Menu.buildFromTemplate([
-    // {
-    //     label: 'Show App',
-    //     click: function () {
-    //         win.show()
-    //     }
-    // },
     {
       label: 'Quit',
       click: () => {
@@ -230,6 +219,9 @@ function registerIpcEvents() {
 app
   .whenReady()
   .then(() => {
+    if (process.platform === 'darwin') {
+      app.dock.hide();
+    }
     createWindow();
     setupMenu();
     setupTrayIcon();
